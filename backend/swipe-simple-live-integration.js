@@ -73,7 +73,7 @@ class SwipeSimpleLiveIntegration {
       // Method 2: Create payment link through Swipe Simple dashboard
       // Since /pay endpoint doesn't exist, we'll provide instructions for manual payment link creation
       const paymentInstructions = this.getManualLinkInstructions(order);
-      
+
       return {
         success: true,
         payment_url: null, // Will be created manually in Swipe Simple dashboard
@@ -87,7 +87,7 @@ class SwipeSimpleLiveIntegration {
           `   - Description: Order #${order.id}`,
           `   - Customer: ${order.customer.name} (${order.customer.email})`,
           "3. Copy the payment link URL and send to customer",
-          "4. Update order status when payment is received"
+          "4. Update order status when payment is received",
         ],
         orderDetails: {
           id: order.id,
