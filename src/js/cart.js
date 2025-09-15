@@ -256,7 +256,7 @@ class ShoppingCart {
         console.log("Order created:", result);
 
         // Redirect to secure checkout form
-        window.location.href = '/checkout.html';
+        window.location.href = "/checkout.html";
       } else {
         throw new Error(result.error || "Order creation failed");
       }

@@ -5,61 +5,37 @@ const nodemailer = require("nodemailer");
 
 class EmailService {
   constructor() {
-    // Railway-optimized SMTP configuration
-    const emailUser = process.env.SMTP_USER || process.env.EMAIL_USER;
-    const emailPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
-    const smtpHost = process.env.SMTP_HOST || "smtp.mail.yahoo.com";
-    const smtpPort = parseInt(process.env.SMTP_PORT) || 587;
-    const isSecure = process.env.SMTP_SECURE === "true" || smtpPort === 465;
-
-    if (emailUser && emailPass) {
-      this.transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: isSecure,
-        auth: {
-          user: emailUser,
-          pass: emailPass,
-        },
-        // Railway-optimized timeout settings (much shorter)
-        connectionTimeout: 15000, // 15 seconds
-        greetingTimeout: 10000, // 10 seconds
-        socketTimeout: 15000, // 15 seconds
-        // Remove pooling for Railway
-        pool: false,
-        // Optimized TLS for Railway
-        tls: {
-          rejectUnauthorized: false,
-          ciphers: "ALL",
-          minVersion: "TLSv1.2",
-        },
-        debug: false,
-        logger: false,
-      });
-
-      console.log(
-        `📧 Email configured: ${smtpHost}:${smtpPort} (secure: ${isSecure})`
-      );
-    } else {
-      console.warn("⚠️ Email credentials missing - email service disabled");
-      this.transporter = null;
-    }
+    // Using a simple SMTP configuration optimized for Yahoo
+    // In production, you would use a proper email service like SendGrid, Mailgun, or AWS SES
+    this.transporter = nodemailer.createTransporter({
+      host: process.env.SMTP_HOST || "smtp.mail.yahoo.com",
+      port: process.env.SMTP_PORT || 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER || process.env.EMAIL_USER,
+        pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
+      },
+      // Railway-optimized timeout settings
+      connectionTimeout: 30000, // 30 seconds (reduced for Railway)
+      greetingTimeout: 15000, // 15 seconds
+      socketTimeout: 30000, // 30 seconds
+      // Remove pooling for better Railway compatibility
+      pool: false,
+      // Railway-compatible TLS settings
+      tls: {
+        rejectUnauthorized: false,
+        ciphers: "ALL",
+      },
+      // Add debug for troubleshooting
+      debug: process.env.NODE_ENV !== "production",
+      logger: process.env.NODE_ENV !== "production",
+    });
 
     this.recipientEmail = "artwithheartandgifts@yahoo.com";
   }
 
   // Send contact form email
   async sendContactForm(formData) {
-    if (!this.transporter) {
-      console.error(
-        "❌ Email service not configured. Missing SMTP credentials."
-      );
-      return {
-        success: false,
-        error: "Email service not configured. Please contact support directly.",
-      };
-    }
-
     try {
       const { name, email, phone, subject, message, inquiryType } = formData;
 
@@ -133,42 +109,6 @@ Source: Art with Heart & Gifts Website
 
   // Send commission inquiry email
   async sendCommissionInquiry(formData) {
-    if (!this.transporter) {
-      console.error(
-        "❌ Email service not configured. Missing SMTP credentials."
-      );
-      return {
-        success: false,
-        error: "Email service not configured. Please contact support directly.",
-      };
-    }
-
-    try {
-      // First try normal SMTP
-      const result = await this.sendEmailWithRetry(formData, "commission");
-      return result;
-    } catch (error) {
-      console.error("SMTP failed, trying backup email service:", error);
-
-      // Backup: Use FormSpree service (always works)
-      try {
-        const backupResult = await this.sendViaBackupService(
-          formData,
-          "commission"
-        );
-        return backupResult;
-      } catch (backupError) {
-        console.error("All email methods failed:", backupError);
-        return {
-          success: false,
-          error: "Failed to send commission inquiry. Please try again later.",
-        };
-      }
-    }
-  }
-
-  // Send with retry logic
-  async sendEmailWithRetry(formData, type) {
     try {
       const { name, email, phone, projectType, budget, timeline, description } =
         formData;
