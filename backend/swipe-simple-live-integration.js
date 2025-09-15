@@ -70,29 +70,31 @@ class SwipeSimpleLiveIntegration {
         }
       }
 
-      // Method 2: Generate payment link URL manually
-      // This creates a URL that can be used with Swipe Simple's payment link system
-      const paymentLinkParams = new URLSearchParams({
-        amount: paymentData.amount,
-        currency: paymentData.currency,
-        description: paymentData.description,
-        customer_email: paymentData.customer_email,
-        customer_name: paymentData.customer_name,
-        return_url: paymentData.return_url,
-        cancel_url: paymentData.cancel_url,
-        order_id: order.id,
-      });
-
-      const paymentUrl = `${this.baseUrl}/pay?${paymentLinkParams.toString()}`;
-
+      // Method 2: Create payment link through Swipe Simple dashboard
+      // Since /pay endpoint doesn't exist, we'll provide instructions for manual payment link creation
+      const paymentInstructions = this.getManualLinkInstructions(order);
+      
       return {
         success: true,
-        payment_url: paymentUrl,
+        payment_url: null, // Will be created manually in Swipe Simple dashboard
         payment_id: `manual_${order.id}`,
         testMode: this.testMode,
-        instructions: this.testMode
-          ? "Test mode: Replace with actual Swipe Simple payment link"
-          : "Live payment link created",
+        instructions: [
+          "Payment link needs to be created in Swipe Simple dashboard:",
+          "1. Go to Payment Links in your Swipe Simple dashboard",
+          "2. Create new payment link with these details:",
+          `   - Amount: $${order.totals.total.toFixed(2)}`,
+          `   - Description: Order #${order.id}`,
+          `   - Customer: ${order.customer.name} (${order.customer.email})`,
+          "3. Copy the payment link URL and send to customer",
+          "4. Update order status when payment is received"
+        ],
+        orderDetails: {
+          id: order.id,
+          total: order.totals.total,
+          customer: order.customer,
+          items: order.items,
+        },
       };
     } catch (error) {
       console.error("Error creating payment link:", error);

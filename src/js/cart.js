@@ -252,15 +252,15 @@ class ShoppingCart {
       const result = await response.json();
 
       if (result.success) {
-        // Redirect to payment page
+        // Order created successfully
         console.log("Order created:", result);
 
-        if (result.testMode) {
-          // For test mode, show test payment page
-          this.showTestPayment(result);
+        if (result.payment_url) {
+          // If we have a direct payment URL, redirect to it
+          window.location.href = result.payment_url;
         } else {
-          // For production, redirect to Swipe Simple
-          window.location.href = result.paymentUrl;
+          // Show payment instructions for manual payment link creation
+          this.showPaymentInstructions(result);
         }
       } else {
         throw new Error(result.error || "Order creation failed");
@@ -621,6 +621,52 @@ Thank you for your order!`;
     return `/contact.html?subject=${encodeURIComponent(
       subject
     )}&message=${encodeURIComponent(message)}`;
+  }
+
+  // Show payment instructions for manual payment link creation
+  showPaymentInstructions(result) {
+    const { orderDetails, instructions } = result;
+    
+    // Create a modal or redirect to a payment instructions page
+    const instructionsHtml = `
+      <div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <h2 style="color: #2c5530; text-align: center; margin-bottom: 30px;">Order Confirmation</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="color: #2c5530; margin-top: 0;">Order Details</h3>
+          <p><strong>Order ID:</strong> ${orderDetails.id}</p>
+          <p><strong>Total Amount:</strong> $${orderDetails.total.toFixed(2)}</p>
+          <p><strong>Customer:</strong> ${orderDetails.customer.name}</p>
+          <p><strong>Email:</strong> ${orderDetails.customer.email}</p>
+        </div>
+
+        <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="color: #2c5530; margin-top: 0;">Payment Instructions</h3>
+          <p>Your order has been received! To complete your payment:</p>
+          <ol>
+            <li>I will create a secure payment link in Swipe Simple</li>
+            <li>You will receive an email with the payment link</li>
+            <li>Click the link to complete your payment securely</li>
+            <li>Your artwork will be processed and shipped within 3-5 business days</li>
+          </ol>
+        </div>
+
+        <div style="text-align: center;">
+          <p style="color: #666;">You can also contact me directly at:</p>
+          <p><strong>Email:</strong> artwithheartandgifts@yahoo.com</p>
+          <p><strong>Phone:</strong> (239) 878-9849</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button onclick="window.location.href='/'" style="background: #2c5530; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            Return to Home
+          </button>
+        </div>
+      </div>
+    `;
+
+    // Create a new page or overlay with instructions
+    document.body.innerHTML = instructionsHtml;
   }
 }
 
