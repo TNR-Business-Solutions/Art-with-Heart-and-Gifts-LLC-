@@ -1,0 +1,14 @@
+[
+  {
+    "id": "story-hero",
+    "title": "Artist At Work",
+    "image": "/story/hero.jpg",
+    "alt": "Artist creating a healing mural in progress",
+    "price": 0,
+    "size": "",
+    "type": "special",
+    "category": "Story",
+    "specialOrder": true,
+    "note": "Available as special order print only"
+  }
+]
