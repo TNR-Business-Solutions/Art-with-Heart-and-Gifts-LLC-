@@ -7,7 +7,7 @@ class EmailService {
   constructor() {
     // Using a simple SMTP configuration
     // In production, you would use a proper email service like SendGrid, Mailgun, or AWS SES
-    this.transporter = nodemailer.createTransporter({
+    this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: process.env.SMTP_PORT || 587,
       secure: false, // true for 465, false for other ports
