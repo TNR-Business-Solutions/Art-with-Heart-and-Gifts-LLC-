@@ -10,10 +10,10 @@ class EmailService {
     const emailPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
     const smtpHost = process.env.SMTP_HOST || "smtp.mail.yahoo.com";
     const smtpPort = parseInt(process.env.SMTP_PORT) || 587;
-    const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
-    
+    const isSecure = process.env.SMTP_SECURE === "true" || smtpPort === 465;
+
     if (emailUser && emailPass) {
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         host: smtpHost,
         port: smtpPort,
         secure: isSecure,
@@ -23,7 +23,7 @@ class EmailService {
         },
         // Railway-optimized timeout settings (much shorter)
         connectionTimeout: 15000, // 15 seconds
-        greetingTimeout: 10000, // 10 seconds  
+        greetingTimeout: 10000, // 10 seconds
         socketTimeout: 15000, // 15 seconds
         // Remove pooling for Railway
         pool: false,
@@ -31,13 +31,15 @@ class EmailService {
         tls: {
           rejectUnauthorized: false,
           ciphers: "ALL",
-          minVersion: "TLSv1.2"
+          minVersion: "TLSv1.2",
         },
         debug: false,
-        logger: false
+        logger: false,
       });
-      
-      console.log(`📧 Email configured: ${smtpHost}:${smtpPort} (secure: ${isSecure})`);
+
+      console.log(
+        `📧 Email configured: ${smtpHost}:${smtpPort} (secure: ${isSecure})`
+      );
     } else {
       console.warn("⚠️ Email credentials missing - email service disabled");
       this.transporter = null;
@@ -49,13 +51,15 @@ class EmailService {
   // Send contact form email
   async sendContactForm(formData) {
     if (!this.transporter) {
-      console.error("❌ Email service not configured. Missing SMTP credentials.");
+      console.error(
+        "❌ Email service not configured. Missing SMTP credentials."
+      );
       return {
         success: false,
         error: "Email service not configured. Please contact support directly.",
       };
     }
-    
+
     try {
       const { name, email, phone, subject, message, inquiryType } = formData;
 
@@ -130,13 +134,15 @@ Source: Art with Heart & Gifts Website
   // Send commission inquiry email
   async sendCommissionInquiry(formData) {
     if (!this.transporter) {
-      console.error("❌ Email service not configured. Missing SMTP credentials.");
+      console.error(
+        "❌ Email service not configured. Missing SMTP credentials."
+      );
       return {
         success: false,
         error: "Email service not configured. Please contact support directly.",
       };
     }
-    
+
     try {
       const { name, email, phone, projectType, budget, timeline, description } =
         formData;
