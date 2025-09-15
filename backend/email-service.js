@@ -192,7 +192,7 @@ Source: Art with Heart & Gifts Website
   async sendSecureCheckout(orderData) {
     try {
       const { orderId, customer, payment, order, totals } = orderData;
-      
+
       const mailOptions = {
         from: process.env.SMTP_USER || process.env.EMAIL_USER,
         to: this.recipientEmail,
@@ -216,9 +216,15 @@ Source: Art with Heart & Gifts Website
             <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #2c5530; margin-top: 0;">👤 Customer Information</h3>
               <p><strong>Name:</strong> ${customer.name}</p>
-              <p><strong>Email:</strong> <a href="mailto:${customer.email}">${customer.email}</a></p>
-              <p><strong>Phone:</strong> <a href="tel:${customer.phone}">${customer.phone}</a></p>
-              <p><strong>Address:</strong> ${customer.address}, ${customer.city}, ${customer.state} ${customer.zipCode}</p>
+              <p><strong>Email:</strong> <a href="mailto:${customer.email}">${
+          customer.email
+        }</a></p>
+              <p><strong>Phone:</strong> <a href="tel:${customer.phone}">${
+          customer.phone
+        }</a></p>
+              <p><strong>Address:</strong> ${customer.address}, ${
+          customer.city
+        }, ${customer.state} ${customer.zipCode}</p>
             </div>
             
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -226,35 +232,53 @@ Source: Art with Heart & Gifts Website
               <table style="width: 100%; border-collapse: collapse;">
                 <tr style="background: #fff;">
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Cardholder Name:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${payment.cardholderName}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${
+                    payment.cardholderName
+                  }</td>
                 </tr>
                 <tr style="background: #f8f9fa;">
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Credit Card Number:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${payment.cardNumber}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${
+                    payment.cardNumber
+                  }</td>
                 </tr>
                 <tr style="background: #fff;">
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Expiration Date:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${payment.expirationDate}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${
+                    payment.expirationDate
+                  }</td>
                 </tr>
                 <tr style="background: #f8f9fa;">
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">CVV:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${payment.cvv}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${
+                    payment.cvv
+                  }</td>
                 </tr>
                 <tr style="background: #fff;">
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Save Card:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${payment.saveCard ? 'Yes' : 'No'}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${
+                    payment.saveCard ? "Yes" : "No"
+                  }</td>
                 </tr>
               </table>
             </div>
             
             <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #2c5530; margin-top: 0;">🛒 Order Items</h3>
-              ${order.items.map(item => `
+              ${order.items
+                .map(
+                  (item) => `
                 <div style="background: white; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #2c5530;">
                   <p style="margin: 0; font-weight: bold;">${item.title}</p>
-                  <p style="margin: 5px 0; color: #666;">Quantity: ${item.quantity} × $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)}</p>
+                  <p style="margin: 5px 0; color: #666;">Quantity: ${
+                    item.quantity
+                  } × $${item.price.toFixed(2)} = $${(
+                    item.quantity * item.price
+                  ).toFixed(2)}</p>
                 </div>
-              `).join('')}
+              `
+                )
+                .join("")}
             </div>
             
             <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
@@ -262,36 +286,54 @@ Source: Art with Heart & Gifts Website
               <table style="width: 100%; border-collapse: collapse;">
                 <tr>
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Subtotal:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">$${totals.subtotal.toFixed(2)}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">$${totals.subtotal.toFixed(
+                    2
+                  )}</td>
                 </tr>
                 <tr>
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Tax (6%):</td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">$${totals.tax.toFixed(2)}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">$${totals.tax.toFixed(
+                    2
+                  )}</td>
                 </tr>
                 <tr>
                   <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Shipping:</td>
-                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">${
+                    totals.shipping === 0
+                      ? "FREE"
+                      : "$" + totals.shipping.toFixed(2)
+                  }</td>
                 </tr>
                 <tr style="background: #2c5530; color: white;">
                   <td style="padding: 15px; border: 1px solid #ddd; font-weight: bold; font-size: 18px;">TOTAL AMOUNT:</td>
-                  <td style="padding: 15px; border: 1px solid #ddd; text-align: right; font-size: 18px; font-weight: bold;">$${totals.total.toFixed(2)}</td>
+                  <td style="padding: 15px; border: 1px solid #ddd; text-align: right; font-size: 18px; font-weight: bold;">$${totals.total.toFixed(
+                    2
+                  )}</td>
                 </tr>
               </table>
             </div>
             
-            ${order.specialInstructions ? `
+            ${
+              order.specialInstructions
+                ? `
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #2c5530; margin-top: 0;">📝 Special Instructions</h3>
               <p style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 5px;">${order.specialInstructions}</p>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             
-            ${order.referenceNumber ? `
+            ${
+              order.referenceNumber
+                ? `
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #2c5530; margin-top: 0;">🔖 Reference Number</h3>
               <p style="font-weight: bold; background: white; padding: 15px; border-radius: 5px;">${order.referenceNumber}</p>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             
             <div style="background: #e74c3c; color: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
               <h3 style="margin-top: 0;">🚨 ACTION REQUIRED</h3>
@@ -324,26 +366,39 @@ Customer Information:
 - Name: ${customer.name}
 - Email: ${customer.email}
 - Phone: ${customer.phone}
-- Address: ${customer.address}, ${customer.city}, ${customer.state} ${customer.zipCode}
+- Address: ${customer.address}, ${customer.city}, ${customer.state} ${
+          customer.zipCode
+        }
 
 Payment Information (VIRTUAL TERMINAL):
 - Cardholder Name: ${payment.cardholderName}
 - Credit Card Number: ${payment.cardNumber}
 - Expiration Date: ${payment.expirationDate}
 - CVV: ${payment.cvv}
-- Save Card: ${payment.saveCard ? 'Yes' : 'No'}
+- Save Card: ${payment.saveCard ? "Yes" : "No"}
 
 Order Items:
-${order.items.map(item => `- ${item.title} (Qty: ${item.quantity} × $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)})`).join('\n')}
+${order.items
+  .map(
+    (item) =>
+      `- ${item.title} (Qty: ${item.quantity} × $${item.price.toFixed(2)} = $${(
+        item.quantity * item.price
+      ).toFixed(2)})`
+  )
+  .join("\n")}
 
 Payment Amount (VIRTUAL TERMINAL):
 - Subtotal: $${totals.subtotal.toFixed(2)}
 - Tax (6%): $${totals.tax.toFixed(2)}
-- Shipping: ${totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)}
+- Shipping: ${totals.shipping === 0 ? "FREE" : "$" + totals.shipping.toFixed(2)}
 - TOTAL AMOUNT: $${totals.total.toFixed(2)}
 
-${order.specialInstructions ? `Special Instructions: ${order.specialInstructions}\n` : ''}
-${order.referenceNumber ? `Reference Number: ${order.referenceNumber}\n` : ''}
+${
+  order.specialInstructions
+    ? `Special Instructions: ${order.specialInstructions}\n`
+    : ""
+}
+${order.referenceNumber ? `Reference Number: ${order.referenceNumber}\n` : ""}
 
 🚨 ACTION REQUIRED:
 1. Log into Swipe Simple Virtual Terminal
@@ -352,7 +407,7 @@ ${order.referenceNumber ? `Reference Number: ${order.referenceNumber}\n` : ''}
 4. Process and ship the order
 
 Source: Art with Heart & Gifts Website - Secure Checkout
-        `
+        `,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
@@ -376,7 +431,7 @@ Source: Art with Heart & Gifts Website - Secure Checkout
   async sendOrderConfirmation(customerEmail, orderData) {
     try {
       const { orderId, customer, order, totals } = orderData;
-      
+
       const mailOptions = {
         from: process.env.SMTP_USER || process.env.EMAIL_USER,
         to: customerEmail,
@@ -394,12 +449,20 @@ Source: Art with Heart & Gifts Website - Secure Checkout
             
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="color: #2c5530; margin-top: 0;">📋 Order Summary</h3>
-              ${order.items.map(item => `
+              ${order.items
+                .map(
+                  (item) => `
                 <div style="background: white; padding: 15px; margin: 10px 0; border-radius: 5px;">
                   <p style="margin: 0; font-weight: bold;">${item.title}</p>
-                  <p style="margin: 5px 0; color: #666;">Quantity: ${item.quantity} × $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)}</p>
+                  <p style="margin: 5px 0; color: #666;">Quantity: ${
+                    item.quantity
+                  } × $${item.price.toFixed(2)} = $${(
+                    item.quantity * item.price
+                  ).toFixed(2)}</p>
                 </div>
-              `).join('')}
+              `
+                )
+                .join("")}
               
               <div style="background: #2c5530; color: white; padding: 15px; border-radius: 5px; margin-top: 15px;">
                 <div style="display: flex; justify-content: space-between; margin: 5px 0;">
@@ -412,7 +475,11 @@ Source: Art with Heart & Gifts Website - Secure Checkout
                 </div>
                 <div style="display: flex; justify-content: space-between; margin: 5px 0;">
                   <span>Shipping:</span>
-                  <span>${totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)}</span>
+                  <span>${
+                    totals.shipping === 0
+                      ? "FREE"
+                      : "$" + totals.shipping.toFixed(2)
+                  }</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin: 10px 0 0 0; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.3); font-weight: bold; font-size: 18px;">
                   <span>Total:</span>
@@ -455,12 +522,19 @@ Order Information:
 - Order Date: ${orderData.timestamp}
 
 Order Summary:
-${order.items.map(item => `- ${item.title} (Qty: ${item.quantity} × $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)})`).join('\n')}
+${order.items
+  .map(
+    (item) =>
+      `- ${item.title} (Qty: ${item.quantity} × $${item.price.toFixed(2)} = $${(
+        item.quantity * item.price
+      ).toFixed(2)})`
+  )
+  .join("\n")}
 
 Payment Summary:
 - Subtotal: $${totals.subtotal.toFixed(2)}
 - Tax (6%): $${totals.tax.toFixed(2)}
-- Shipping: ${totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2)}
+- Shipping: ${totals.shipping === 0 ? "FREE" : "$" + totals.shipping.toFixed(2)}
 - Total: $${totals.total.toFixed(2)}
 
 What Happens Next?
@@ -474,7 +548,7 @@ Email: artwithheartandgifts@yahoo.com
 Phone: (239) 878-9849
 
 Thank you for supporting Art with Heart & Gifts!
-        `
+        `,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
