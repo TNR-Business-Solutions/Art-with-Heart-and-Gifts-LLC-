@@ -5,31 +5,43 @@ const nodemailer = require("nodemailer");
 
 class EmailService {
   constructor() {
-    // Using a simple SMTP configuration optimized for Yahoo
-    // In production, you would use a proper email service like SendGrid, Mailgun, or AWS SES
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.mail.yahoo.com",
-      port: process.env.SMTP_PORT || 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER || process.env.EMAIL_USER,
-        pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
-      },
-      // Add timeout and connection settings for Yahoo SMTP
-      connectionTimeout: 60000, // 60 seconds
-      greetingTimeout: 30000, // 30 seconds
-      socketTimeout: 60000, // 60 seconds
-      pool: true,
-      maxConnections: 1,
-      maxMessages: 100,
-      rateDelta: 1000,
-      rateLimit: 5,
-      // Yahoo SMTP specific settings
-      tls: {
-        ciphers: "SSLv3",
-        rejectUnauthorized: false,
-      },
-    });
+    // Railway-optimized SMTP configuration
+    const emailUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+    const emailPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
+    const smtpHost = process.env.SMTP_HOST || "smtp.mail.yahoo.com";
+    const smtpPort = parseInt(process.env.SMTP_PORT) || 587;
+    const isSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+    
+    if (emailUser && emailPass) {
+      this.transporter = nodemailer.createTransporter({
+        host: smtpHost,
+        port: smtpPort,
+        secure: isSecure,
+        auth: {
+          user: emailUser,
+          pass: emailPass,
+        },
+        // Railway-optimized timeout settings (much shorter)
+        connectionTimeout: 15000, // 15 seconds
+        greetingTimeout: 10000, // 10 seconds  
+        socketTimeout: 15000, // 15 seconds
+        // Remove pooling for Railway
+        pool: false,
+        // Optimized TLS for Railway
+        tls: {
+          rejectUnauthorized: false,
+          ciphers: "ALL",
+          minVersion: "TLSv1.2"
+        },
+        debug: false,
+        logger: false
+      });
+      
+      console.log(`📧 Email configured: ${smtpHost}:${smtpPort} (secure: ${isSecure})`);
+    } else {
+      console.warn("⚠️ Email credentials missing - email service disabled");
+      this.transporter = null;
+    }
 
     this.recipientEmail = "artwithheartandgifts@yahoo.com";
   }
