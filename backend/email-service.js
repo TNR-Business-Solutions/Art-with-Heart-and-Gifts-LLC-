@@ -36,6 +36,14 @@ class EmailService {
 
   // Send contact form email
   async sendContactForm(formData) {
+    if (!this.transporter) {
+      console.error("❌ Email service not configured. Missing SMTP credentials.");
+      return {
+        success: false,
+        error: "Email service not configured. Please contact support directly.",
+      };
+    }
+    
     try {
       const { name, email, phone, subject, message, inquiryType } = formData;
 
@@ -109,6 +117,14 @@ Source: Art with Heart & Gifts Website
 
   // Send commission inquiry email
   async sendCommissionInquiry(formData) {
+    if (!this.transporter) {
+      console.error("❌ Email service not configured. Missing SMTP credentials.");
+      return {
+        success: false,
+        error: "Email service not configured. Please contact support directly.",
+      };
+    }
+    
     try {
       const { name, email, phone, projectType, budget, timeline, description } =
         formData;
