@@ -308,6 +308,86 @@ app.get("/api/swipe-simple/config", (req, res) => {
   });
 });
 
+// Secure checkout endpoint
+app.post("/api/secure-checkout", async (req, res) => {
+  try {
+    const { customer, payment, order } = req.body;
+    
+    // Validate required fields
+    if (!customer?.name || !customer?.email || !customer?.phone) {
+      return res.status(400).json({
+        success: false,
+        error: "Customer name, email, and phone are required"
+      });
+    }
+    
+    if (!payment?.cardholderName || !payment?.cardNumber || !payment?.expirationDate || !payment?.cvv) {
+      return res.status(400).json({
+        success: false,
+        error: "All payment fields are required"
+      });
+    }
+    
+    // Generate order ID
+    const orderId = `ORDER-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Prepare order data for email
+    const orderData = {
+      orderId: orderId,
+      timestamp: new Date().toLocaleString(),
+      customer: customer,
+      payment: payment,
+      order: order,
+      totals: order.totals
+    };
+    
+    // Send secure checkout email to admin
+    const emailResult = await emailService.sendSecureCheckout(orderData);
+    
+    if (emailResult.success) {
+      // Save order to database
+      const ordersData = await fs.readFile(ordersFile, "utf8");
+      const orders = JSON.parse(ordersData);
+      
+      const newOrder = {
+        id: orderId,
+        customer: customer,
+        payment: payment,
+        items: order.items,
+        totals: order.totals,
+        status: "pending_payment",
+        createdAt: new Date().toISOString(),
+        specialInstructions: order.specialInstructions,
+        referenceNumber: order.referenceNumber
+      };
+      
+      orders.push(newOrder);
+      await fs.writeFile(ordersFile, JSON.stringify(orders, null, 2));
+      
+      // Send confirmation email to customer
+      await emailService.sendOrderConfirmation(customer.email, orderData);
+      
+      res.json({
+        success: true,
+        orderId: orderId,
+        message: "Order submitted successfully. You will receive a confirmation email shortly."
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: "Failed to send order notification"
+      });
+    }
+    
+  } catch (error) {
+    console.error("Secure checkout error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to process secure checkout"
+    });
+  }
+});
+
 // Email endpoints
 app.post("/api/contact", async (req, res) => {
   try {

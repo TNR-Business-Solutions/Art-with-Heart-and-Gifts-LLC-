@@ -255,13 +255,8 @@ class ShoppingCart {
         // Order created successfully
         console.log("Order created:", result);
 
-        if (result.payment_url) {
-          // If we have a direct payment URL, redirect to it
-          window.location.href = result.payment_url;
-        } else {
-          // Show payment instructions for manual payment link creation
-          this.showPaymentInstructions(result);
-        }
+        // Redirect to secure checkout form
+        window.location.href = '/checkout.html';
       } else {
         throw new Error(result.error || "Order creation failed");
       }
@@ -626,7 +621,7 @@ Thank you for your order!`;
   // Show payment instructions for manual payment link creation
   showPaymentInstructions(result) {
     const { orderDetails, instructions } = result;
-    
+
     // Create a modal or redirect to a payment instructions page
     const instructionsHtml = `
       <div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
@@ -635,7 +630,9 @@ Thank you for your order!`;
         <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
           <h3 style="color: #2c5530; margin-top: 0;">Order Details</h3>
           <p><strong>Order ID:</strong> ${orderDetails.id}</p>
-          <p><strong>Total Amount:</strong> $${orderDetails.total.toFixed(2)}</p>
+          <p><strong>Total Amount:</strong> $${orderDetails.total.toFixed(
+            2
+          )}</p>
           <p><strong>Customer:</strong> ${orderDetails.customer.name}</p>
           <p><strong>Email:</strong> ${orderDetails.customer.email}</p>
         </div>
