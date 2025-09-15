@@ -681,7 +681,21 @@ $$("form#commissionForm").forEach((form) => {
     e.preventDefault();
     
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const rawData = Object.fromEntries(formData.entries());
+    
+    // Map form fields to backend expected format
+    const data = {
+      name: rawData.name,
+      email: rawData.email,
+      phone: rawData.phone,
+      projectType: rawData.type, // Map 'type' to 'projectType'
+      budget: rawData.budget,
+      timeline: rawData.timeline,
+      description: rawData.theme, // Map 'theme' to 'description'
+      dimensions: rawData.dimensions,
+      location: rawData.location,
+      additional: rawData.additional
+    };
     
     // Show loading state
     const submitButton = form.querySelector('button[type="submit"]');
