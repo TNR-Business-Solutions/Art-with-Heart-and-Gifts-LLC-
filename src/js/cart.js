@@ -238,13 +238,16 @@ class ShoppingCart {
       console.log("Submitting order:", orderData);
 
       // Submit order to backend
-      const response = await fetch("http://localhost:3001/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await fetch(
+        "https://art-with-heart-and-gifts-llc-production.up.railway.app/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
 
       const result = await response.json();
 
@@ -335,7 +338,7 @@ class ShoppingCart {
   async completeTestPayment(orderId, status) {
     try {
       const response = await fetch(
-        "http://localhost:3001/api/payment/complete",
+        "https://art-with-heart-and-gifts-llc-production.up.railway.app/api/payment/complete",
         {
           method: "POST",
           headers: {

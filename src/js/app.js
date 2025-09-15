@@ -633,13 +633,140 @@ async function replaceInlineImages() {
   });
 }
 
-$$("form[data-demo]").forEach((f) =>
-  f.addEventListener("submit", (e) => {
+// Handle contact form submissions
+$$("form#contactForm").forEach((form) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    alert("Submitted (demo)");
-    f.reset();
-  })
-);
+    
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = "Sending...";
+    submitButton.disabled = true;
+    
+    try {
+      const response = await fetch("https://art-with-heart-and-gifts-llc-production.up.railway.app/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert("Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.");
+        form.reset();
+      } else {
+        alert(`Error: ${result.error || "Failed to send message. Please try again."}`);
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      alert("Sorry, there was an error sending your message. Please try again or contact us directly at artwithheartandgifts@yahoo.com");
+    } finally {
+      // Reset button state
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    }
+  });
+});
+
+// Handle commission form submissions
+$$("form#commissionForm").forEach((form) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = "Sending...";
+    submitButton.disabled = true;
+    
+    try {
+      const response = await fetch("https://art-with-heart-and-gifts-llc-production.up.railway.app/api/commission", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert("Thank you! Your commission inquiry has been sent successfully. We'll get back to you within 24 hours to discuss your project.");
+        form.reset();
+      } else {
+        alert(`Error: ${result.error || "Failed to send inquiry. Please try again."}`);
+      }
+    } catch (error) {
+      console.error("Commission form error:", error);
+      alert("Sorry, there was an error sending your inquiry. Please try again or contact us directly at artwithheartandgifts@yahoo.com");
+    } finally {
+      // Reset button state
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    }
+  });
+});
+
+// Handle newsletter signup
+$$("form#newsletterForm").forEach((form) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = "Subscribing...";
+    submitButton.disabled = true;
+    
+    try {
+      // For newsletter, we'll send it as a contact form with a special subject
+      const newsletterData = {
+        name: "Newsletter Subscriber",
+        email: data.email,
+        subject: "Newsletter Signup",
+        message: "New newsletter subscription request",
+        inquiryType: "Newsletter"
+      };
+      
+      const response = await fetch("https://art-with-heart-and-gifts-llc-production.up.railway.app/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newsletterData),
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert("Thank you for subscribing! You'll receive updates about new art releases and special offers.");
+        form.reset();
+      } else {
+        alert(`Error: ${result.error || "Failed to subscribe. Please try again."}`);
+      }
+    } catch (error) {
+      console.error("Newsletter signup error:", error);
+      alert("Sorry, there was an error with your subscription. Please try again or contact us directly at artwithheartandgifts@yahoo.com");
+    } finally {
+      // Reset button state
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    }
+  });
+});
 
 // Payment functionality
 window.showPaymentForm = async function (productId, productTitle, price) {

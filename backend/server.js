@@ -6,13 +6,15 @@ const fs = require("fs").promises;
 const { v4: uuidv4 } = require("uuid");
 const PaymentProcessor = require("./payment-processor");
 const SwipeSimpleLiveIntegration = require("./swipe-simple-live-integration");
+const EmailService = require("./email-service");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize payment processor and Swipe Simple integration
+// Initialize payment processor, Swipe Simple integration, and email service
 const paymentProcessor = new PaymentProcessor();
 const swipeSimple = new SwipeSimpleLiveIntegration();
+const emailService = new EmailService();
 
 // Middleware
 app.use(cors());
@@ -304,6 +306,117 @@ app.get("/api/swipe-simple/config", (req, res) => {
       webhooks: true,
     },
   });
+});
+
+// Email endpoints
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, email, phone, subject, message, inquiryType } = req.body;
+    
+    // Validate required fields
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: name, email, and message are required"
+      });
+    }
+    
+    const result = await emailService.sendContactForm({
+      name,
+      email,
+      phone,
+      subject,
+      message,
+      inquiryType
+    });
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: "Your message has been sent successfully! We'll get back to you within 24 hours.",
+        messageId: result.messageId
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: "Failed to send email. Please try again later."
+      });
+    }
+  } catch (error) {
+    console.error("Contact form error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error"
+    });
+  }
+});
+
+app.post("/api/commission", async (req, res) => {
+  try {
+    const { name, email, phone, projectType, budget, timeline, description } = req.body;
+    
+    // Validate required fields
+    if (!name || !email || !description) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: name, email, and project description are required"
+      });
+    }
+    
+    const result = await emailService.sendCommissionInquiry({
+      name,
+      email,
+      phone,
+      projectType,
+      budget,
+      timeline,
+      description
+    });
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: "Your commission inquiry has been sent successfully! We'll get back to you within 24 hours to discuss your project.",
+        messageId: result.messageId
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: "Failed to send commission inquiry. Please try again later."
+      });
+    }
+  } catch (error) {
+    console.error("Commission inquiry error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error"
+    });
+  }
+});
+
+app.post("/api/email/test", async (req, res) => {
+  try {
+    const result = await emailService.testEmailService();
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: "Test email sent successfully",
+        messageId: result.messageId
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: result.error
+      });
+    }
+  } catch (error) {
+    console.error("Email test error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to send test email"
+    });
+  }
 });
 
 // Serve static files
