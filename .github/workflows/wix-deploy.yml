@@ -1,0 +1,43 @@
+name: Deploy to Wix
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Install Wix CLI
+      run: npm install -g @wix/cli
+      
+    - name: Login to Wix
+      run: |
+        echo "${{ secrets.WIX_ACCESS_TOKEN }}" | wix login --token
+      env:
+        WIX_ACCESS_TOKEN: ${{ secrets.WIX_ACCESS_TOKEN }}
+        
+    - name: Deploy to Wix
+      run: |
+        wix publish --yes
+      env:
+        WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
+        
+    - name: Verify deployment
+      run: |
+        echo "Deployment completed successfully!"
+        echo "Site URL: https://${{ secrets.WIX_SITE_ID }}.wixsite.com"
