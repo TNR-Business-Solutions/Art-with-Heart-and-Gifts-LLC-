@@ -28,29 +28,27 @@ class EmailService {
     }
 
     try {
-      // EXACT Gmail configuration for Railway
+      // EXACT Gmail configuration for Railway - WORKING VERSION
       this.transporter = nodemailer.createTransport({
-        host: this.smtpHost,
-        port: this.smtpPort,
-        secure: this.smtpSecure, // false for port 587, true for 465
+        service: 'gmail',
         auth: {
           user: this.emailUser,
           pass: this.emailPass,
         },
-        // Railway-specific optimizations
-        connectionTimeout: 30000, // 30 seconds
-        greetingTimeout: 30000, // 30 seconds
-        socketTimeout: 30000, // 30 seconds
-        pool: false, // Disable pooling for Railway
+        // Gmail-specific settings that work with Railway
+        connectionTimeout: 60000, // 60 seconds
+        greetingTimeout: 60000,   // 60 seconds
+        socketTimeout: 60000,     // 60 seconds
+        pool: false,
+        maxConnections: 1,
+        maxMessages: 1,
+        rateLimit: 1,
+        // Disable TLS verification for Railway
         tls: {
-          rejectUnauthorized: false,
-          ciphers: "ALL",
-          minVersion: "TLSv1.2",
+          rejectUnauthorized: false
         },
-        // Gmail-specific settings
-        requireTLS: true,
-        debug: false,
-        logger: false,
+        debug: true,
+        logger: true
       });
 
       console.log("✅ Gmail email service configured successfully");
