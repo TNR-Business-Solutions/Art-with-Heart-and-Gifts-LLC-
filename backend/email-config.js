@@ -4,8 +4,7 @@
 module.exports = {
   // Gmail SMTP Configuration
   emailUser: process.env.EMAIL_USER || "artwithheartandgiftsllc@gmail.com",
-  emailPass:
-    process.env.EMAIL_PASS || process.env.SMTP_PASS || "rbzkiuokoimeyeco",
+  emailPass: process.env.EMAIL_PASS || process.env.SMTP_PASS || "",
 
   // Recipient email (where contact forms are sent)
   recipientEmail: "artwithheartandgifts@yahoo.com",
