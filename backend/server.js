@@ -6,7 +6,7 @@ const fs = require("fs").promises;
 const { v4: uuidv4 } = require("uuid");
 const PaymentProcessor = require("./payment-processor");
 const SwipeSimpleLiveIntegration = require("./swipe-simple-live-integration");
-const EmailService = require("./email-service");
+const EmailService = require("./email-service-gmail-fixed");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
