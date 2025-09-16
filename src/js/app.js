@@ -649,7 +649,7 @@ $$("form#contactForm").forEach((form) => {
 
     try {
       const response = await fetch(
-        "https://art-with-heart-and-gifts-llc-production.up.railway.app/api/contact",
+        "/api/contact",
         {
           method: "POST",
           headers: {
@@ -717,7 +717,7 @@ $$("form#commissionForm").forEach((form) => {
 
     try {
       const response = await fetch(
-        "https://art-with-heart-and-gifts-llc-production.up.railway.app/api/commission",
+        "/api/commission",
         {
           method: "POST",
           headers: {
@@ -780,7 +780,7 @@ $$("form#newsletterForm").forEach((form) => {
       };
 
       const response = await fetch(
-        "https://art-with-heart-and-gifts-llc-production.up.railway.app/api/contact",
+        "/api/contact",
         {
           method: "POST",
           headers: {
