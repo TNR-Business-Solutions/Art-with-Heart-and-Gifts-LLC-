@@ -1,4 +1,35 @@
 {
-  "siteId": "80926284-0981-4320-9490-01d139e93b86",
-  "uiVersion": "4"
+  "name": "artwithheartandgifts",
+  "version": "1.0.0",
+  "description": "Art with Heart & Gifts - Handcrafted Art & Gifts",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "wix deploy"
+  },
+  "keywords": [
+    "art",
+    "gifts",
+    "handcrafted",
+    "custom",
+    "commissions",
+    "gallery"
+  ],
+  "author": "Art with Heart & Gifts LLC",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^7.1.5"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  },
+  "wix": {
+    "siteId": "artwithheartandgifts",
+    "domain": "artwithheartandgifts.com",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "installCommand": "npm install"
+  }
 }

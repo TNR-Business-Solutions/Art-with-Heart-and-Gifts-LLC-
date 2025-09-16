@@ -1,84 +1,178 @@
-# Art with Heart & Gifts
+# Art with Heart & Gifts - Website
 
-Beautiful handmade artwork by Charmin - original paintings and prints available for purchase.
+A beautiful, responsive website for a Florida-based artist offering healing-inspired original art, prints, murals, and gifts.
 
-## 🌟 Features
+## 🎨 Features
 
-- **135 Products:** 25 originals + 110 prints
-- **Gallery:** 86 items showcasing Charmin's artwork
-- **E-commerce:** Full shopping cart and checkout
-- **Payment Processing:** Swipe Simple Payment Links integration
-- **Responsive Design:** Works on all devices
+- **Responsive Design**: Mobile-first approach with beautiful layouts
+- **E-commerce Integration**: Shopping cart and payment processing via Swipe Simple
+- **Email Notifications**: Contact forms and commission inquiries
+- **Gallery System**: Showcase artwork with collections and filtering
+- **Commission Requests**: Custom artwork and mural inquiries
+- **SEO Optimized**: Search engine friendly with proper meta tags
 
-## 🚀 Live Site
+## 🚀 Quick Start
 
-- **Frontend:** https://artwithheartandgifts.com (Netlify)
-- **Backend:** https://your-railway-app.railway.app (Railway)
+### Frontend Development
 
-## 🛠 Technology Stack
+```bash
+# Install dependencies
+npm install
 
-- **Frontend:** Vite + Vanilla JavaScript
-- **Backend:** Node.js + Express
-- **Payment:** Swipe Simple Payment Links
-- **Hosting:** Netlify (frontend) + Railway (backend)
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### Backend Development
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+npm install
+
+# Start backend server
+npm start
+
+# Test email service
+node test-email.js
+```
 
 ## 📁 Project Structure
 
 ```
 artwithheartandgifts/
 ├── src/                    # Frontend source code
-├── backend/               # Backend server code
-├── public/               # Static assets (images)
-├── dist/                 # Built frontend files
+│   ├── js/                # JavaScript modules
+│   │   ├── app.js         # Main application logic
+│   │   ├── cart.js        # Shopping cart functionality
+│   │   └── products.js    # Product data management
+│   └── styles/            # CSS styles
+│       └── base.css       # Main stylesheet
+├── backend/               # Backend API
+│   ├── server.js          # Express server
+│   ├── email-service-simple.js  # Email service
+│   ├── payment-processor.js     # Payment handling
+│   └── test-email.js      # Email testing script
+├── images/                # Artwork images
 ├── data.json             # Product data
+├── data-collections.json # Collection data
 ├── data-gallery.json     # Gallery data
-└── railway.json          # Railway deployment config
+└── data-story.json       # Story data
 ```
+
+## 🔧 Configuration
+
+### Email Service
+
+The email service is configured in `backend/email-config.js`:
+
+```javascript
+module.exports = {
+  emailUser: "artwithheartandgiftsllc@gmail.com",
+  emailPass: "your_app_password_here",
+  recipientEmail: "artwithheartandgifts@yahoo.com",
+};
+```
+
+### Environment Variables
+
+Create a `.env` file in the backend directory:
+
+```env
+EMAIL_USER=artwithheartandgiftsllc@gmail.com
+EMAIL_PASS=your_gmail_app_password
+PORT=3001
+```
+
+## 📧 Email System
+
+The website includes a robust email system for:
+
+- **Contact Forms**: General inquiries and questions
+- **Commission Requests**: Custom artwork and mural inquiries
+- **Order Notifications**: Secure checkout and order confirmations
+- **Newsletter Signups**: Email list subscriptions
+
+### Testing Email Service
+
+```bash
+cd backend
+node test-email.js
+```
+
+## 🛒 E-commerce Features
+
+- **Shopping Cart**: Add/remove items, quantity management
+- **Payment Processing**: Swipe Simple integration
+- **Order Management**: Secure checkout with email notifications
+- **Product Filtering**: By type, collection, price, etc.
+- **Responsive Design**: Works on all devices
+
+## 🎨 Artwork Management
+
+- **Product Data**: Stored in JSON files for easy management
+- **Image Optimization**: Responsive images with multiple formats
+- **Collections**: Organized by themes (Healing, Florida, etc.)
+- **Gallery System**: Showcase artwork with pagination
 
 ## 🚀 Deployment
 
-### Backend (Railway)
-1. Connect GitHub repo to Railway
-2. Set Root Directory to `backend`
-3. Add environment variables
-4. Deploy!
+### Frontend (Netlify/Vercel)
 
-### Frontend (Netlify)
-1. Build with `npm run build`
-2. Upload `dist/` folder to Netlify
-3. Configure custom domain
+1. Build the project: `npm run build`
+2. Deploy the `dist` folder
+3. Configure redirects for SPA routing
 
-## 💳 Payment Integration
+### Backend (Railway/Heroku)
 
-- **Provider:** Swipe Simple Payment Links
-- **Tax Rate:** 7% (6% FL state + 1% Pasco County)
-- **Webhook:** Configured for order processing
+1. Deploy the `backend` folder
+2. Set environment variables
+3. Configure email service credentials
 
-## 📊 Statistics
+## 📱 Pages
 
-- **Products:** 135 total
-- **Images:** 151 optimized images
-- **Revenue Potential:** $2,053 across all products
-- **Pages:** 13 HTML pages
+- **Home** (`index.html`): Hero section, featured collections, new arrivals
+- **Gallery** (`gallery.html`): Artwork showcase with filtering
+- **Shop** (`shop.html`): E-commerce product listing
+- **Collections** (`collections.html`): Themed artwork collections
+- **Commissions** (`commissions.html`): Custom artwork requests
+- **About** (`about.html`): Artist story and background
+- **Contact** (`contact.html`): Contact form and information
+- **Healing** (`healing.html`): Healing art focus page
 
 ## 🔧 Development
 
-```bash
-# Install dependencies
-npm install
-cd backend && npm install
+### Adding New Products
 
-# Start development servers
-npm run dev:full  # Starts both frontend and backend
+1. Add product data to `data.json`
+2. Include image in `images/` directory
+3. Update collections in `data-collections.json` if needed
 
-# Build for production
-npm run build
-```
+### Styling
 
-## 📞 Contact
+- Main stylesheet: `src/styles/base.css`
+- Responsive design with CSS Grid and Flexbox
+- Mobile-first approach
 
-For custom commissions or questions, visit our [contact page](https://artwithheartandgifts.com/contact.html).
+### JavaScript
 
----
+- Modular ES6+ JavaScript
+- Cart functionality with localStorage
+- Form handling with fetch API
+- Image optimization and lazy loading
 
-**Art with Heart & Gifts** - Bringing beauty and joy through handmade artwork.
+## 📞 Support
+
+For technical support or questions:
+
+- Email: artwithheartandgifts@yahoo.com
+- Phone: (239) 878-9849
+
+## 📄 License
+
+© 2024 Art with Heart and Gifts. All rights reserved.

@@ -6,21 +6,10 @@
   "scripts": {
     "dev": "vite",
     "dev:full": "concurrently \"npm run dev\" \"npm run backend\"",
-    "generate:images": "node scripts/generate-responsive-images.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "generate:gallery": "node scripts/generateGalleryData.mjs",
-    "prebuild": "npm run generate:gallery",
-    "postbuild": "node scripts/copy-data-files.mjs",
     "test": "npm run build",
     "clean:system": "powershell -File scripts/clean-system.ps1 -RemoveVite -CleanNpmCache",
-    "diag:gallery": "node scripts/diag-gallery.js",
-    "setup:wix": "node scripts/setup-wix-env.mjs",
-    "deploy:wix": "node scripts/wix-real-deploy.mjs",
-    "deploy:wix-demo": "node scripts/wix-deploy.mjs",
-    "upload:images": "node scripts/wix-real-deploy.mjs --images-only",
-    "create:pages": "node scripts/wix-real-deploy.mjs --pages-only",
-    "setup:store": "node scripts/wix-real-deploy.mjs --store-only",
     "setup:backend": "cd backend && npm install",
     "backend": "cd backend && npm start",
     "admin": "echo 'Admin functionality available through localStorage in browser console'"
@@ -36,6 +25,7 @@
     "concurrently": "^8.2.2",
     "docx": "^9.5.1",
     "dotenv": "^17.2.2",
+    "googleapis": "^159.0.0",
     "xlsx": "^0.18.5"
   }
 }
