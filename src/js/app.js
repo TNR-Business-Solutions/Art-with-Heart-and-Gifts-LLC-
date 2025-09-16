@@ -648,16 +648,13 @@ $$("form#contactForm").forEach((form) => {
     submitButton.disabled = true;
 
     try {
-      const response = await fetch(
-        "/api/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
 
@@ -716,16 +713,13 @@ $$("form#commissionForm").forEach((form) => {
     submitButton.disabled = true;
 
     try {
-      const response = await fetch(
-        "/api/commission",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch("/api/commission", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
 
@@ -779,16 +773,13 @@ $$("form#newsletterForm").forEach((form) => {
         inquiryType: "Newsletter",
       };
 
-      const response = await fetch(
-        "/api/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newsletterData),
-        }
-      );
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newsletterData),
+      });
 
       const result = await response.json();
 
